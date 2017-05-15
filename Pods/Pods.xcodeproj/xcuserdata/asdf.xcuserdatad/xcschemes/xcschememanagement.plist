@@ -14,7 +14,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>GoogleToolboxForMac.xcscheme</key>
+		<key>GoogleToolboxForMac-Defines-Logger-NSData+zlib.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GoogleToolboxForMac-Defines-NSData+zlib.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -25,6 +30,11 @@
 			<false/>
 		</dict>
 		<key>Pods-SoMATests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Protobuf.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -42,22 +52,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>00103D6C821BE85971C563025527BA5D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>123C088EE0710556C9A49CF0FF6057D0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>37C5C46AA4D5114DF4919C88814C9F9E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>40E7477AD67135868F5FB08136602674</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>433E90BF6136E433A0FEA61CD4159E56</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>62F17A7EC24F4961A8B8EDCC9B2D7AD5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>83E2567C3D4C20C598940C1171A16F6F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -67,12 +77,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8BF1357FB4131B49528D2F46A142A8B1</key>
+		<key>9924B392319235E213ED3C7D6CD91482</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9CE476A12ABEB64284E717FB6F1275F6</key>
+		<key>A6E12C0ADC1A6E4FD297D69DDA433AFD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B433F88F029F98C4DA48C8EB922D3CC6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F399EFF68F90275EABE8EE2DBC505692</key>
 		<dict>
 			<key>primary</key>
 			<true/>

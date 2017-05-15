@@ -4,6 +4,7 @@ use_frameworks!
 target 'SoMA' do
     pod 'SQLite.swift', '~> 0.11.3'
     pod 'Firebase/Core'
+    pod 'Firebase/Messaging'
     pod 'Gloss', '~> 1.2'
     pod 'Alamofire', '~> 4.4'
     pod 'SwiftyJSON'
