@@ -9,16 +9,17 @@
 import UIKit
 import CoreLocation
 import MapKit
-import SQLite
 import Foundation
 import Alamofire
-import SwiftyJSON
 
 class ViewController: UIViewController {
   
-  // Create an outlet for the map
-  @IBOutlet var mapView: MKMapView!
-  
+  let uploadSchedule: Int = 1 // upload every n minutes
+  let timeout: TimeInterval = 90 // deferred location update timeout
+  let untilTraveled: CLLocationDistance = 100 // update when traveled n meters
+  let koblenz = CLLocation(latitude: 50.3569, longitude: 7.5890)
+  let regionRadius: CLLocationDistance = 1500
+
   fileprivate var locations = [CLLocation]()
   fileprivate var annotations = [MKPointAnnotation]()
   fileprivate var lastUpload = Date()
@@ -47,134 +48,63 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    initLocation()
+    initLocation(homeLocation: koblenz)
     start()
-  }
-  
-  func start() {
-    print("start")
-    //    locationManager.startMonitoringSignificantLocationChanges()
-    //    locationManager.allowDeferredLocationUpdates(untilTraveled: 100, timeout: 30)
-    locationManager.startUpdatingLocation()
-  }
-  
-  func stop() {
-    print("stop")
-    //    locationManager.stopMonitoringSignificantLocationChanges()
-    //    locationManager.disallowDeferredLocationUpdates()
-    locationManager.stopUpdatingLocation()
-  }
-  
-  func initLocation() {
-    let initialLocation = CLLocation(latitude: 50.3569, longitude: 7.5890)
-    centerMapOnLocation(location: initialLocation)
-    updateLocationCounter.textAlignment = .center
-  }
-  
-  let regionRadius: CLLocationDistance = 1500
-  
-  func centerMapOnLocation(location: CLLocation) {
-    let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
-    mapView.setRegion(coordinateRegion, animated: true)
   }
   
   private lazy var locationManager: CLLocationManager = {
     let manager = CLLocationManager()
     manager.desiredAccuracy = kCLLocationAccuracyBest
     manager.delegate = self
+    manager.distanceFilter = 5
+    manager.allowsBackgroundLocationUpdates = true
     manager.requestAlwaysAuthorization()
-    manager.pausesLocationUpdatesAutomatically = false
+    manager.pausesLocationUpdatesAutomatically = false // keep running
     return manager
   }()
   
+  // MARK: Outlets
+
+  @IBOutlet var mapView: MKMapView!
+  
   @IBOutlet weak var updateLocationCounter: UILabel!
   
-  @IBAction func enabledChanged(_ sender: UISwitch) {
+  @IBAction func uploadLocations(_ sender: UIButton) {
+    uploadLocations()
+  }
+  
+  @IBAction func toggleLocationUpdates(_ sender: UISwitch) {
     if sender.isOn {
       start()
     } else {
       stop()
     }
   }
-  
+
   // MARK: Actions
   
-  @IBAction func uploadLocations(_ sender: UIButton) {
-    uploadLocations()
+  func start() {
+    print("start")
+    //    locationManager.startMonitoringSignificantLocationChanges()
+    locationManager.startUpdatingLocation()
+    locationManager.allowDeferredLocationUpdates(untilTraveled: self.untilTraveled, timeout: self.timeout)
   }
   
-  func uploadLocations() {
-    let device_id: String = UIDevice.current.identifierForVendor!.uuidString;
-    var locationData = [Location]()
-    
-    var parameters: [String:Any] = [
-      "clientUUID": device_id,
-      "uuid": UUID().uuidString, // goes to 'uuid' column in table 'trips'
-      "locationData": []
-    ]
-    
-    for location in self.locations {
-      locationData.append(
-        Location(
-          accuracy: location.verticalAccuracy,
-          altitude: location.altitude,
-          bearing: location.course,
-          latitude: location.coordinate.latitude,
-          longitude: location.coordinate.longitude,
-          timestamp: location.timestamp.timeIntervalSince1970,
-          speed: location.speed
-        )
-      )
-    }
-    
-    parameters["locationData"] = locationData.map { $0.toJSON() }
-    
-    debugPrint(locationData)
-    
-    Alamofire.request(
-      "https://soma.uni-koblenz.de/api",
-      method: .post,
-      parameters: parameters,
-      encoding: JSONEncoding.default,
-      headers: nil
-      ).responseString { response in
-        if response.response?.statusCode == 200 {
-          self.lastUpload = Date()
-          self.locations.removeAll()
-          self.updateLocationCounter.text = String(self.locations.count)
-          self.mapView.removeAnnotations(self.annotations)
-          self.annotations.removeAll()
-          self.centerMapOnLocation(location: CLLocation(latitude: 50.3569, longitude: 7.5890))
-          print("OK")
-        }
-    }
+  func stop() {
+    print("stop")
+    //    locationManager.stopMonitoringSignificantLocationChanges()
+    locationManager.stopUpdatingLocation()
+    locationManager.disallowDeferredLocationUpdates()
   }
   
-  func writeLocationstoFile() {
-    
-    let filename = "somefile"
-    let text = "some text"
-    
-    let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-    
-    let fileURL = DocumentDirURL.appendingPathComponent(filename).appendingPathExtension("txt")
-    
-    print("Filepath: \(fileURL.path)")
-    
-    do {
-      try text.write(to: fileURL, atomically: true, encoding: .utf8)
-    } catch {
-      print(error.localizedDescription)
-    }
-    
-    do {
-      let attr = try FileManager.default.attributesOfItem(atPath: fileURL.path)
-      let filesize = attr[FileAttributeKey.size] as! UInt64
-      print("filesize", filesize)
-    } catch {
-      print(error.localizedDescription)
-    }
-    
+  func initLocation(homeLocation: CLLocation) {
+    centerMapOnLocation(location: homeLocation)
+    updateLocationCounter.textAlignment = .center
+  }
+  
+  func centerMapOnLocation(location: CLLocation) {
+    let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
+    mapView.setRegion(coordinateRegion, animated: true)
   }
   
   func getLocation() {
@@ -207,6 +137,86 @@ class ViewController: UIViewController {
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
     start()
   }
+
+  func uploadLocations() {
+    let API_URL = "https://soma.uni-koblenz.de/api"
+    let device_id: String = UIDevice.current.identifierForVendor!.uuidString;
+    var locationData = [Location]()
+    
+    var parameters: [String:Any] = [
+      "clientUUID": device_id,
+      "uuid": UUID().uuidString, // goes to 'uuid' column in table 'trips'
+      "locationData": []
+    ]
+    
+    for location in self.locations {
+      locationData.append(
+        Location(
+          accuracy: location.verticalAccuracy,
+          altitude: location.altitude,
+          bearing: location.course,
+          latitude: location.coordinate.latitude,
+          longitude: location.coordinate.longitude,
+          timestamp: location.timestamp.timeIntervalSince1970,
+          speed: location.speed
+        )
+      )
+    }
+    
+    parameters["locationData"] = locationData.map { $0.toJSON() }
+    
+    debugPrint(locationData)
+    
+    Alamofire.request(API_URL,
+      method: .post,
+      parameters: parameters,
+      encoding: JSONEncoding.default,
+      headers: nil
+      ).responseString { response in
+        if response.response?.statusCode == 200 {
+          self.uploadSuccessHandler()
+        }
+    }
+  }
+  
+  func uploadSuccessHandler() {
+    self.lastUpload = Date()
+    self.locations.removeAll()
+    self.updateLocationCounter.text = String(self.locations.count)
+    self.mapView.removeAnnotations(self.annotations)
+    self.annotations.removeAll()
+    self.centerMapOnLocation(location: koblenz)
+    print("OK")
+  }
+  
+  func writeLocationstoFile() {
+    
+    // TODO: Write out all data to file/sqlite b/c background
+    // uploads must get their JSON from a file.
+    
+    let filename = "somefile"
+    let text = "some text"
+    
+    let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    
+    let fileURL = DocumentDirURL.appendingPathComponent(filename).appendingPathExtension("txt")
+    
+    print("Filepath: \(fileURL.path)")
+    
+    do {
+      try text.write(to: fileURL, atomically: true, encoding: .utf8)
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+    do {
+      let attr = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+      let filesize = attr[FileAttributeKey.size] as! UInt64
+      print("filesize", filesize)
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
 }
 
 // MARK: - CLLocationManagerDelegate methods
@@ -215,41 +225,79 @@ extension ViewController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     
     // Return if there are no recent locations.
-    guard let mostRecentLocation = locations.last else {
+    guard let lastLocation = locations.last else {
       return
     }
     
-    // Add the latest location to our collected locations
-    self.locations.append(mostRecentLocation)
-        // Add another annotation to the map.
-    let annotation = MKPointAnnotation()
-    annotation.coordinate = mostRecentLocation.coordinate
-    
-    // Also add to our map so we can remove old values later
-    self.annotations.append(annotation)
-    
-    let timeSinceUpdate = Calendar.current.dateComponents([.second, .minute], from: lastUpload, to: Date())
-    
-    if timeSinceUpdate.minute! >= 30 {
-      uploadLocations()
+    storeLocation(location: lastLocation)
+    makeAnnotation(location: lastLocation)
+    checkUploadSchedule(timeSinceUpdate: lastUpdate())
+    updateUI(timeSinceUpdate: lastUpdate(), location: lastLocation)
+  }
+  
+  func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
+    print("pause location updates")
+  }
+  
+  func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
+    print("resume location updates")
+  }
+  
+  func locationManager(_ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?) {
+    if (error == nil) {
+      print("REQUESTING LOCATION")
+      manager.requestLocation()
     } else {
-      print(String(format: "%d %02d:%02d", self.locations.count, timeSinceUpdate.minute!, timeSinceUpdate.second! % 60))
-    }
-    
-    // Update UI
-    updateLocationCounter.text = String(format: "%02d:%02d", timeSinceUpdate.minute!, timeSinceUpdate.second! % 60) + " " + String(self.locations.count)
-    
-    if UIApplication.shared.applicationState == .active {
-      mapView.showAnnotations(self.annotations, animated: true)
-    } else {
-      print("App is backgrounded. New location is %@", mostRecentLocation)
+      print("Error: \(error ?? "NOERR" as! Error)")
     }
   }
   
-  // This is called if:
-  // - the location manager is updating, and
-  // - it WASN'T able to get the user's location.
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     print("Error: \(error)")
   }
+  
+  func lastUpdate() -> DateComponents {
+    return Calendar.current.dateComponents([.second, .minute], from: lastUpload, to: Date())
+  }
+  
+  // Add the latest location to our collected locations
+  func storeLocation(location: CLLocation) {
+    self.locations.append(location)
+  }
+  
+  // Add annotations to the map
+  func makeAnnotation(location: CLLocation) {
+    let annotation = MKPointAnnotation()
+    annotation.coordinate = location.coordinate
+    self.annotations.append(annotation)
+  }
+  
+  // Check time since last upload and maybe upload
+  func checkUploadSchedule(timeSinceUpdate: DateComponents) {
+    if timeSinceUpdate.minute! >= uploadSchedule {
+      uploadLocations()
+    }
+  }
+  
+  func updateUI(timeSinceUpdate: DateComponents, location: CLLocation) {
+    
+    let locationInfo = String(format: "%03d %02d:%02d",
+                              self.locations.count,
+                              timeSinceUpdate.minute!,
+                              timeSinceUpdate.second! % 60)
+    
+    updateLocationCounter.text = locationInfo
+    print(locationInfo, location)
+
+    // Add marker to map only if app is in foreground
+    if UIApplication.shared.applicationState == .active {
+      mapView.showAnnotations(self.annotations, animated: true)
+    }
+  }
+    // This is called if:
+  // - the location manager is updating, and
+  // - it WASN'T able to get the user's location.
+//  func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+//    print("Error: \(error)")
+//  }
 }

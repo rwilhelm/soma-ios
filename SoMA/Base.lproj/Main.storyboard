@@ -25,20 +25,23 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yDQ-KW-D0t">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nOo-uu-Vom">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nOo-uu-Vom">
                                 <rect key="frame" x="16" y="20" width="51" height="31"/>
                                 <connections>
-                                    <action selector="enabledChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="eFT-vx-nsg"/>
+                                    <action selector="toggleLocationUpdates:" destination="BYZ-38-t0r" eventType="valueChanged" id="KR4-sN-4vw"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Location Info" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYA-98-mO6">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Info" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYA-98-mO6">
                                 <rect key="frame" x="267" y="638" width="92" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="92" id="5Rq-oL-lfa"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zCo-pc-QFW">
-                                <rect key="frame" x="309" y="617" width="50" height="30"/>
+                                <rect key="frame" x="309" y="600" width="50" height="30"/>
                                 <state key="normal" title="Upload"/>
                                 <connections>
                                     <action selector="uploadLocations:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TLI-Fs-fKv"/>
@@ -49,13 +52,14 @@
                         <constraints>
                             <constraint firstItem="yDQ-KW-D0t" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="6rF-uN-9Dx"/>
                             <constraint firstAttribute="trailing" secondItem="yDQ-KW-D0t" secondAttribute="trailing" id="A2j-uG-ZaL"/>
-                            <constraint firstItem="nOo-uu-Vom" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="BRJ-Dg-yrP"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nYA-98-mO6" secondAttribute="bottom" constant="8" symbolic="YES" id="HLZ-Jg-CwC"/>
-                            <constraint firstItem="nOo-uu-Vom" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="XiC-Mi-Cyg"/>
-                            <constraint firstItem="zCo-pc-QFW" firstAttribute="trailing" secondItem="nYA-98-mO6" secondAttribute="trailing" id="YVp-13-ozY"/>
+                            <constraint firstItem="nYA-98-mO6" firstAttribute="top" secondItem="zCo-pc-QFW" secondAttribute="bottom" constant="8" symbolic="YES" id="Q8p-g2-MjR"/>
+                            <constraint firstItem="nOo-uu-Vom" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Wpx-pz-kBT"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nYA-98-mO6" secondAttribute="bottom" constant="8" symbolic="YES" id="kGo-bx-9a1"/>
+                            <constraint firstItem="nOo-uu-Vom" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="nEz-CL-YFO"/>
                             <constraint firstItem="yDQ-KW-D0t" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="oMS-GU-c1B"/>
-                            <constraint firstItem="nYA-98-mO6" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="rUt-53-vW3"/>
-                            <constraint firstAttribute="bottom" secondItem="zCo-pc-QFW" secondAttribute="bottom" constant="20" symbolic="YES" id="xhi-JX-ZmM"/>
+                            <constraint firstItem="nYA-98-mO6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="618" id="rLn-g7-Vof"/>
+                            <constraint firstItem="zCo-pc-QFW" firstAttribute="trailing" secondItem="nYA-98-mO6" secondAttribute="trailing" id="tzy-L7-kYj"/>
+                            <constraint firstItem="nYA-98-mO6" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="uH0-7N-8wM"/>
                             <constraint firstItem="yDQ-KW-D0t" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="yZw-dq-pcz"/>
                         </constraints>
                     </view>

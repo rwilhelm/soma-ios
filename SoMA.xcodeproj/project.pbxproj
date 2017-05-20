@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		126FE8F04FBF9792997DB326 /* Pods_SoMATests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD65146D837B3092D7C23BE2 /* Pods_SoMATests.framework */; };
 		2CE6DA9D150BBA1C86F4B543 /* Pods_SoMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D64BD203FA8B96B6F23202A /* Pods_SoMA.framework */; };
-		CC70F9EB1EC4A59B0035031B /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC70F9E91EC4A59B0035031B /* DatabaseHelper.swift */; };
 		CC70F9EC1EC4A59B0035031B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */; };
 		CC70F9EE1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CC70F9ED1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx */; };
 		CCD56D2D1EC4A0E1004E0EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */; };
@@ -19,7 +18,6 @@
 		CCD56D371EC4A0E1004E0EF0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCD56D351EC4A0E1004E0EF0 /* LaunchScreen.storyboard */; };
 		CCD56D421EC4A0E1004E0EF0 /* SoMATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD56D411EC4A0E1004E0EF0 /* SoMATests.swift */; };
 		CCD56D4D1EC4A0E1004E0EF0 /* SoMAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD56D4C1EC4A0E1004E0EF0 /* SoMAUITests.swift */; };
-		CCF1FCE91EC4C8C200E5A44A /* UploadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF1FCE81EC4C8C200E5A44A /* UploadHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +42,6 @@
 		790FF07A1CB4C612814B82F0 /* Pods-SoMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SoMA/Pods-SoMA.debug.xcconfig"; sourceTree = "<group>"; };
 		81BD6F5AEFE556556424A479 /* Pods-SoMATests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoMATests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SoMATests/Pods-SoMATests.release.xcconfig"; sourceTree = "<group>"; };
 		904BFC55264392FE2968D6BD /* Pods-SoMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-SoMA/Pods-SoMA.release.xcconfig"; sourceTree = "<group>"; };
-		CC70F9E91EC4A59B0035031B /* DatabaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CC70F9ED1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Track-2011-07-13 21 36 21.gpx"; sourceTree = "<group>"; };
 		CCD56D291EC4A0E1004E0EF0 /* SoMA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoMA.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,7 +57,6 @@
 		CCD56D481EC4A0E1004E0EF0 /* SoMAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoMAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCD56D4C1EC4A0E1004E0EF0 /* SoMAUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoMAUITests.swift; sourceTree = "<group>"; };
 		CCD56D4E1EC4A0E1004E0EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CCF1FCE81EC4C8C200E5A44A /* UploadHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadHelper.swift; sourceTree = "<group>"; };
 		DD65146D837B3092D7C23BE2 /* Pods_SoMATests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SoMATests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8EA5497D50A0C9975218AA7 /* Pods-SoMATests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoMATests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SoMATests/Pods-SoMATests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -138,8 +134,6 @@
 		CCD56D2B1EC4A0E1004E0EF0 /* SoMA */ = {
 			isa = PBXGroup;
 			children = (
-				CC70F9E91EC4A59B0035031B /* DatabaseHelper.swift */,
-				CCF1FCE81EC4C8C200E5A44A /* UploadHelper.swift */,
 				CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */,
 				CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */,
 				CCD56D2E1EC4A0E1004E0EF0 /* ViewController.swift */,
@@ -413,8 +407,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCD56D2F1EC4A0E1004E0EF0 /* ViewController.swift in Sources */,
-				CC70F9EB1EC4A59B0035031B /* DatabaseHelper.swift in Sources */,
-				CCF1FCE91EC4C8C200E5A44A /* UploadHelper.swift in Sources */,
 				CCD56D2D1EC4A0E1004E0EF0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
