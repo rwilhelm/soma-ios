@@ -14,12 +14,12 @@ import Alamofire
 
 class ViewController: UIViewController {
   
-  let uploadSchedule: Int = 1 // upload every n minutes
+  let uploadSchedule: Int = 30 // upload every n minutes
   let timeout: TimeInterval = 90 // deferred location update timeout
   let untilTraveled: CLLocationDistance = 100 // update when traveled n meters
   let koblenz = CLLocation(latitude: 50.3569, longitude: 7.5890)
   let regionRadius: CLLocationDistance = 1500
-
+  
   fileprivate var locations = [CLLocation]()
   fileprivate var annotations = [MKPointAnnotation]()
   fileprivate var lastUpload = Date()
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     initLocation(homeLocation: koblenz)
-    start()
+//    start()
   }
   
   private lazy var locationManager: CLLocationManager = {
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
   }()
   
   // MARK: Outlets
-
+  
   @IBOutlet var mapView: MKMapView!
   
   @IBOutlet weak var updateLocationCounter: UILabel!
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
       stop()
     }
   }
-
+  
   // MARK: Actions
   
   func start() {
@@ -137,7 +137,7 @@ class ViewController: UIViewController {
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
     start()
   }
-
+  
   func uploadLocations() {
     let API_URL = "https://soma.uni-koblenz.de/api"
     let device_id: String = UIDevice.current.identifierForVendor!.uuidString;
@@ -168,10 +168,10 @@ class ViewController: UIViewController {
     debugPrint(locationData)
     
     Alamofire.request(API_URL,
-      method: .post,
-      parameters: parameters,
-      encoding: JSONEncoding.default,
-      headers: nil
+                      method: .post,
+                      parameters: parameters,
+                      encoding: JSONEncoding.default,
+                      headers: nil
       ).responseString { response in
         if response.response?.statusCode == 200 {
           self.uploadSuccessHandler()
@@ -223,12 +223,10 @@ class ViewController: UIViewController {
 extension ViewController: CLLocationManagerDelegate {
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    
-    // Return if there are no recent locations.
+    // Return if there are no recent locations
     guard let lastLocation = locations.last else {
       return
     }
-    
     storeLocation(location: lastLocation)
     makeAnnotation(location: lastLocation)
     checkUploadSchedule(timeSinceUpdate: lastUpdate())
@@ -253,7 +251,7 @@ extension ViewController: CLLocationManagerDelegate {
   }
   
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    print("Error: \(error)")
+    print("Error: NOLOCATIONERROR \(error)")
   }
   
   func lastUpdate() -> DateComponents {
@@ -280,7 +278,6 @@ extension ViewController: CLLocationManagerDelegate {
   }
   
   func updateUI(timeSinceUpdate: DateComponents, location: CLLocation) {
-    
     let locationInfo = String(format: "%03d %02d:%02d",
                               self.locations.count,
                               timeSinceUpdate.minute!,
@@ -288,16 +285,10 @@ extension ViewController: CLLocationManagerDelegate {
     
     updateLocationCounter.text = locationInfo
     print(locationInfo, location)
-
+    
     // Add marker to map only if app is in foreground
     if UIApplication.shared.applicationState == .active {
       mapView.showAnnotations(self.annotations, animated: true)
     }
   }
-    // This is called if:
-  // - the location manager is updating, and
-  // - it WASN'T able to get the user's location.
-//  func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//    print("Error: \(error)")
-//  }
 }
