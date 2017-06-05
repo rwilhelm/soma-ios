@@ -19,11 +19,13 @@ class ViewController: UIViewController {
   let untilTraveled: CLLocationDistance = 100 // update when traveled n meters
   let koblenz = CLLocation(latitude: 50.3569, longitude: 7.5890)
   let regionRadius: CLLocationDistance = 1500
-  
+  let distanceFilter: CLLocationDistance = 10
   fileprivate var locations = [CLLocation]()
   fileprivate var annotations = [MKPointAnnotation]()
   fileprivate var lastUpload = Date()
-  
+  let API_URL = "https://soma.uni-koblenz.de:5000/upload"
+  let device_id: String = UIDevice.current.identifierForVendor!.uuidString;
+
   struct Location {
     var accuracy: Double
     var altitude: Double
@@ -139,12 +141,10 @@ class ViewController: UIViewController {
   }
   
   func uploadLocations() {
-    let API_URL = "https://soma.uni-koblenz.de/api"
-    let device_id: String = UIDevice.current.identifierForVendor!.uuidString;
     var locationData = [Location]()
     
     var parameters: [String:Any] = [
-      "clientUUID": device_id,
+      "device_id": device_id,
       "uuid": UUID().uuidString, // goes to 'uuid' column in table 'trips'
       "locationData": []
     ]
