@@ -11,15 +11,16 @@ import CoreLocation
 import MapKit
 import Foundation
 import Alamofire
+import Firebase
 
 class ViewController: UIViewController {
   
-  let uploadSchedule: Int = 30 // upload every n minutes
+  let uploadSchedule: Int = 60 // upload every n minutes
   let timeout: TimeInterval = 90 // deferred location update timeout
-  let untilTraveled: CLLocationDistance = 100 // update when traveled n meters
+  let untilTraveled: CLLocationDistance = 0 // update when traveled n meters
   let koblenz = CLLocation(latitude: 50.3569, longitude: 7.5890)
   let regionRadius: CLLocationDistance = 1500
-  let distanceFilter: CLLocationDistance = 10
+  let distanceFilter: CLLocationDistance = 0
   fileprivate var locations = [CLLocation]()
   fileprivate var annotations = [MKPointAnnotation]()
   fileprivate var lastUpload = Date()
@@ -58,7 +59,7 @@ class ViewController: UIViewController {
     let manager = CLLocationManager()
     manager.desiredAccuracy = kCLLocationAccuracyBest
     manager.delegate = self
-    manager.distanceFilter = 5
+    manager.distanceFilter = self.distanceFilter
     manager.allowsBackgroundLocationUpdates = true
     manager.requestAlwaysAuthorization()
     manager.pausesLocationUpdatesAutomatically = false // keep running
