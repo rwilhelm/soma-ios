@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>de_DE</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,17 +15,19 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<string>NO</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Can we please always track your location?</string>
+	<string>Ihre Positionsdaten werden gesammelt und zur weiteren Analyse an einen Server geschickt und anonymisiert in einer Datenbank gespeichert.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Ihre Positionsdaten werden gesammelt und zur weiteren Analyse an einen Server geschickt und anonymisiert in einer Datenbank gespeichert.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We are tracking your location</string>
+	<string>We are tracking your location. Thank you.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

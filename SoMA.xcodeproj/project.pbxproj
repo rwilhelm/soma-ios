@@ -10,7 +10,6 @@
 		126FE8F04FBF9792997DB326 /* Pods_SoMATests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD65146D837B3092D7C23BE2 /* Pods_SoMATests.framework */; };
 		2CE6DA9D150BBA1C86F4B543 /* Pods_SoMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D64BD203FA8B96B6F23202A /* Pods_SoMA.framework */; };
 		CC70F9EC1EC4A59B0035031B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */; };
-		CC70F9EE1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CC70F9ED1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx */; };
 		CCD56D2D1EC4A0E1004E0EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */; };
 		CCD56D2F1EC4A0E1004E0EF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD56D2E1EC4A0E1004E0EF0 /* ViewController.swift */; };
 		CCD56D321EC4A0E1004E0EF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCD56D301EC4A0E1004E0EF0 /* Main.storyboard */; };
@@ -43,7 +42,7 @@
 		81BD6F5AEFE556556424A479 /* Pods-SoMATests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoMATests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SoMATests/Pods-SoMATests.release.xcconfig"; sourceTree = "<group>"; };
 		904BFC55264392FE2968D6BD /* Pods-SoMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-SoMA/Pods-SoMA.release.xcconfig"; sourceTree = "<group>"; };
 		CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CC70F9ED1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Track-2011-07-13 21 36 21.gpx"; sourceTree = "<group>"; };
+		CC9291661EE664CC00E26556 /* SoMA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoMA.entitlements; sourceTree = "<group>"; };
 		CCD56D291EC4A0E1004E0EF0 /* SoMA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoMA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CCD56D2E1EC4A0E1004E0EF0 /* ViewController.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ViewController.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -111,7 +110,6 @@
 		CCD56D201EC4A0E1004E0EF0 = {
 			isa = PBXGroup;
 			children = (
-				CC70F9ED1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx */,
 				CCD56D2B1EC4A0E1004E0EF0 /* SoMA */,
 				CCD56D401EC4A0E1004E0EF0 /* SoMATests */,
 				CCD56D4B1EC4A0E1004E0EF0 /* SoMAUITests */,
@@ -134,6 +132,7 @@
 		CCD56D2B1EC4A0E1004E0EF0 /* SoMA */ = {
 			isa = PBXGroup;
 			children = (
+				CC9291661EE664CC00E26556 /* SoMA.entitlements */,
 				CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */,
 				CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */,
 				CCD56D2E1EC4A0E1004E0EF0 /* ViewController.swift */,
@@ -237,11 +236,14 @@
 				TargetAttributes = {
 					CCD56D281EC4A0E1004E0EF0 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = LZQZTG6RF3;
+						DevelopmentTeam = H29AK6SA35;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
 							};
 						};
 					};
@@ -285,7 +287,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCD56D371EC4A0E1004E0EF0 /* LaunchScreen.storyboard in Resources */,
-				CC70F9EE1EC4A8DB0035031B /* Track-2011-07-13 21 36 21.gpx in Resources */,
 				CC70F9EC1EC4A59B0035031B /* GoogleService-Info.plist in Resources */,
 				CCD56D341EC4A0E1004E0EF0 /* Assets.xcassets in Resources */,
 				CCD56D321EC4A0E1004E0EF0 /* Main.storyboard in Resources */,
@@ -562,10 +563,11 @@
 			baseConfigurationReference = 790FF07A1CB4C612814B82F0 /* Pods-SoMA.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = LZQZTG6RF3;
+				CODE_SIGN_ENTITLEMENTS = SoMA/SoMA.entitlements;
+				DEVELOPMENT_TEAM = H29AK6SA35;
 				INFOPLIST_FILE = SoMA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.fb1.SoMA;
+				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.SoMA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -576,10 +578,11 @@
 			baseConfigurationReference = 904BFC55264392FE2968D6BD /* Pods-SoMA.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = LZQZTG6RF3;
+				CODE_SIGN_ENTITLEMENTS = SoMA/SoMA.entitlements;
+				DEVELOPMENT_TEAM = H29AK6SA35;
 				INFOPLIST_FILE = SoMA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.fb1.SoMA;
+				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.SoMA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -594,7 +597,7 @@
 				DEVELOPMENT_TEAM = LZQZTG6RF3;
 				INFOPLIST_FILE = SoMATests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.fb1.SoMATests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.SoMATests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoMA.app/SoMA";
@@ -610,7 +613,7 @@
 				DEVELOPMENT_TEAM = LZQZTG6RF3;
 				INFOPLIST_FILE = SoMATests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.fb1.SoMATests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.SoMATests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoMA.app/SoMA";
@@ -624,7 +627,7 @@
 				DEVELOPMENT_TEAM = LZQZTG6RF3;
 				INFOPLIST_FILE = SoMAUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.fb1.SoMAUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.SoMAUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = SoMA;
@@ -638,7 +641,7 @@
 				DEVELOPMENT_TEAM = LZQZTG6RF3;
 				INFOPLIST_FILE = SoMAUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.fb1.SoMAUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.uniko.SoMAUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = SoMA;
