@@ -7,17 +7,17 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>288893270266-uu42vrsek1rpc6eodm054u4q23j6oqpb.apps.googleusercontent.com</string>
+	<string>288893270266-ibfs6dept8iaevbled2hg6jhpi3r0qc2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.288893270266-uu42vrsek1rpc6eodm054u4q23j6oqpb</string>
+	<string>com.googleusercontent.apps.288893270266-ibfs6dept8iaevbled2hg6jhpi3r0qc2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAbyLmkaJyNDl7mzLviB6kpWw9HMU5t0Wc</string>
+	<string>AIzaSyDELYfXMZ1lFvfT29vt0z5Vbhoe7Rhyp9c</string>
 	<key>GCM_SENDER_ID</key>
 	<string>288893270266</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>de.uniko.fb1.SoMA</string>
+	<string>de.uniko.SoMA</string>
 	<key>PROJECT_ID</key>
 	<string>soma-6678d</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:288893270266:ios:eedc65e92f05e4c6</string>
+	<string>1:288893270266:ios:f485d6ee6b5acebd</string>
 	<key>DATABASE_URL</key>
 	<string>https://soma-6678d.firebaseio.com</string>
 </dict>
