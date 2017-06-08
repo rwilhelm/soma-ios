@@ -27,46 +27,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        print("AppDelegate didFinishLaunchingWithOptions")
-
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        Messaging.messaging().shouldEstablishDirectChannel = true
+        //        NotificationsController.configure()
         
         // Register for remote notifications. This shows a permission dialog on first run, to
         // show the dialog at a more appropriate time move this registration accordingly.
         // [START register_for_notifications]
         if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
             
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
             UNUserNotificationCenter.current().requestAuthorization(
                 options: authOptions,
                 completionHandler: {_, _ in })
             
-            // For iOS 10 data message (sent via FCM)
-            FIRMessaging.messaging().remoteMessageDelegate = self
-            
+            application.registerForRemoteNotifications()
         } else {
             let settings: UIUserNotificationSettings =
                 UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
             application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
         }
-        
-        application.registerForRemoteNotifications()
-        
         // [END register_for_notifications]
         
-        FIRApp.configure()
-        
-        // [START add_token_refresh_observer]
-        // Add observer for InstanceID token refresh callback.
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.tokenRefreshNotification),
-                                               name: .firInstanceIDTokenRefresh,
-                                               object: nil)
-        // [END add_token_refresh_observer]
+        printFCMToken()
         
         return true
     }
+    
+    
+    func printFCMToken() {
+        if let token = Messaging.messaging().fcmToken {
+            print("FCM Token: \(token)")
+        } else {
+            print("FCM Token: nil")
+        }
+    }
+    
     
     // [START receive_message]
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
@@ -104,35 +102,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // [START refresh_token]
     func tokenRefreshNotification(_ notification: Notification) {
-        if let refreshedToken = FIRInstanceID.instanceID().token() {
-            print("token " + FIRInstanceID.instanceID().token()!)
-            print("InstanceID token: \(refreshedToken)")
-        }
+        print("[AD] tokenRefreshNotification")
         
-        // Connect to FCM since connection may have failed when attempted before having a token.
-        connectToFcm()
+        
+        // SEND NOTIFICATION FOR TESTTEST
+        
+        postTokenToAPI()
+        
+        Messaging.messaging().shouldEstablishDirectChannel = true
     }
     // [END refresh_token]
     
-    // [START connect_to_fcm]
-    func connectToFcm() {
-        // Won't connect since there is no token
-        guard FIRInstanceID.instanceID().token() != nil else {
-            return
-        }
-        
-        // Disconnect previous FCM connection if it exists.
-        FIRMessaging.messaging().disconnect()
-        
-        FIRMessaging.messaging().connect { (error) in
-            if error != nil {
-                print("Unable to connect with FCM. \(error?.localizedDescription ?? "")")
-            } else {
-                print("Connected to FCM.")
-            }
-        }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        print("[AD] didReceiveRemoteNotification")
+        Messaging.messaging().appDidReceiveMessage(userInfo) // Send to Firebase for analytics  etc.
+        print("userInfo", userInfo)
     }
-    // [END connect_to_fcm]
+    
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Unable to register for remote notifications: \(error.localizedDescription)")
@@ -143,76 +130,95 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // the InstanceID token.
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("APNs token retrieved: \(deviceToken)")
-        
-        // https://stackoverflow.com/a/37967012/220472
-        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-//        print("token: \(deviceTokenString)")
-
-//        let tokenString = String(data: deviceToken, encoding: String.Encoding.utf8) as String!
-        print("token: \(deviceTokenString)")
-//        print(String(data: deviceToken, encoding: String.Encoding.utf8) as String!)
-
-        // With swizzling disabled you must set the APNs token here.
-        //FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.unknown)
+        Messaging.messaging().apnsToken = deviceToken
+        postTokenToAPI()
     }
+    // [END handle_received_apns_token]
+    
     
     // [START connect_on_active]
     func applicationDidBecomeActive(_ application: UIApplication) {
-        connectToFcm()
+        Messaging.messaging().shouldEstablishDirectChannel = true
     }
     // [END connect_on_active]
     
     // [START disconnect_from_fcm]
     func applicationDidEnterBackground(_ application: UIApplication) {
-        FIRMessaging.messaging().disconnect()
+        Messaging.messaging().shouldEstablishDirectChannel = false
         print("Disconnected from FCM.")
     }
     // [END disconnect_from_fcm]
+    
+    
+    // [START post_token_to_api]
+    func postTokenToAPI() {
+        
+        guard let token = InstanceID.instanceID().token() else {
+            print("NIL FCM TOKEN")
+            return
+        }
+
+//        if let token = Messaging.messaging().fcmToken {
+//            print("FCM Token: \(token)")
+//        } else {
+//            print("FCM Token: nil")
+//        }
+
+        let parameters: [String:Any] = [
+            "token": token,
+            "device_id": UIDevice.current.identifierForVendor!.uuidString
+        ]
+        
+        debugPrint(parameters)
+        
+        Alamofire.request("https://soma.uni-koblenz.de/fcm/token",
+                          method: .post,
+                          parameters: parameters,
+                          encoding: JSONEncoding.default,
+                          headers: nil
+            ).responseString { response in
+                if response.response?.statusCode == 200 {
+                    print("TOKEN UPLOAD OK. RESPONSE: \(response)")
+                } else {
+                    print("TOKEN UPLOAD FAILED. RESPONSE: \(response)")
+                }
+        }
+    }
+    // [END post_token_to_api]
 }
 
-// [START ios_10_message_handling]
-@available(iOS 10, *)
-extension AppDelegate : UNUserNotificationCenterDelegate {
-    
-    // Receive displayed notifications for iOS 10 devices.
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification,
-                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        
-        // Print full message.
-        print(userInfo)
-        
-        // Change this to your preferred presentation option
-        completionHandler([])
-    }
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        
-        // Print full message.
-        print(userInfo)
-        
-        completionHandler()
-    }
-}
-// [END ios_10_message_handling]
 
-// [START ios_10_data_message_handling]
-extension AppDelegate : FIRMessagingDelegate {
-    // Receive data message on iOS 10 devices while app is in the foreground.
-    func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
-        print(remoteMessage.appData)
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("didRefreshRegistrationToken")
+        printFCMToken()
+        postTokenToAPI()
+    }
+    
+    // Direct channel data messages are delivered here, on iOS 10.0+.
+    // The `shouldEstablishDirectChannel` property should be be set to |true| before data messages can
+    // arrive.
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        guard let data =
+            try? JSONSerialization.data(withJSONObject: remoteMessage.appData, options: .prettyPrinted),
+            let prettyPrinted = String(data: data, encoding: .utf8) else {
+                print("[ERROR] Could not read notification data")
+                return
+        }
+        
+        let nc = NotificationCenter.default // Note that default is now a property, not a method call
+        nc.addObserver(forName:Notification.Name(rawValue:"MyNotification"),
+                       object:nil, queue:nil) {
+                        notification in
+                        // Handle notification
+        }
+        
+        // http://wp.me/p4aNmq-PI
+        
+        nc.post(name:Notification.Name(rawValue:"MyNotification"),
+        object: nil,
+        userInfo: ["message":"Hello there!", "date":Date()])
+        
+        print("Received direct channel message:\n\(prettyPrinted)")
     }
 }
-// [END ios_10_data_message_handling]
