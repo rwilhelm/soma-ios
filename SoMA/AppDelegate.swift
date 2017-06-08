@@ -22,11 +22,8 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    //let gcmMessageIDKey = "288893270266"
-    //let gcmMessageIDKey = "de.uniko.SoMA"
-    //let gcmMessageIDKey = "H29AK6SA35"
-    let gcmMessageIDKey = "WQF7Q7BXHG"
-
+    let gcmMessageIDKey = "288893270266"
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
