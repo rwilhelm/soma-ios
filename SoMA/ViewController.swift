@@ -22,19 +22,19 @@ class ViewController: UIViewController {
   let timeout: TimeInterval = 90 // deferred location update timeout
   let untilTraveled: CLLocationDistance = 0 // update when traveled n meters
   let distanceFilter: CLLocationDistance = 0
-
+  
   let koblenz = CLLocation(latitude: 50.3569, longitude: 7.5890)
   let regionRadius: CLLocationDistance = 1500
-
+  
   fileprivate var locations = [CLLocation]()
   fileprivate var annotations = [MKPointAnnotation]()
   fileprivate var lastUpload = Date()
   
   let API_URL = "https://soma.uni-koblenz.de:5000/upload"
   let TOKEN_URL = "https://soma.uni-koblenz.de:7593"
-
+  
   let device_id: String = UIDevice.current.identifierForVendor!.uuidString;
-
+  
   struct Location {
     var accuracy: Double
     var altitude: Double
@@ -58,16 +58,16 @@ class ViewController: UIViewController {
   }
   
   let surveyNotification = Notification.Name(rawValue:"SurveyNotification")
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     initLocation(homeLocation: koblenz)
-
+    
     // [START add_notification_observer]
     let nc = NotificationCenter.default
     nc.addObserver(forName:surveyNotification, object:nil, queue:nil, using:handleSurveyNotification)
     // [END add_notification_observer]
-
+    
     start()
   }
   
@@ -77,73 +77,24 @@ class ViewController: UIViewController {
   
   
   func handleSurveyNotification(notification:Notification) -> Void {
-    print("[FOREGROUND NOTIFICATION]")
-    
+    // [START validate_notification_data]
     guard let userInfo = notification.userInfo,
       let surveyUrl  = userInfo["surveyUrl"] else {
         print("[FIXME] Notification has no surveyUrl")
         return
     }
-    
+    // [END validate_notification_data]
+
     open(scheme: surveyUrl as! String)
     
     // [START post_notification]
-        let nc = NotificationCenter.default
-        nc.post(name:surveyNotification, object: nil, userInfo: notification.userInfo)
+    let nc = NotificationCenter.default
+    nc.post(name:surveyNotification, object: nil, userInfo: notification.userInfo)
     // [END post_notification]
-
-    
-    // FIXME Alert doesnt show up
-//    let alert = UIAlertController(title: "SoMA",
-//                                  message:"Bitte nehmen Sie an der Umfrage teil VG",
-//                                  preferredStyle: UIAlertControllerStyle.alert)
-//    
-//    alert.addAction(UIAlertAction(title: "OK",
-//                                  style: UIAlertActionStyle.default,
-//                                  handler: { action in
-//                                    self.goToSurvey(surveyUrl: surveyUrl)
-//    }))
-//    
-//    self.present(alert, animated: true, completion: nil)
   }
-  
-  
-//  func goToSurvey(surveyUrl: URL) {
-//    print("[GO TO URL]")
-////    if UIApplication.shared.canOpenURL(surveyUrl) {
-////      UIApplication.shared.open(surveyUrl, options: [:], completionHandler: { (success) in
-////        print("Open url : \(success)")
-////      })
-////      let url = NSURL(string: "https://google.com")!
-////      UIApplication.shared.openURL(url as URL)
-//    
-//      
-//      // Typical usage
-//      open(scheme: surveyUrl)
-//      
-//
-//
-////    }
 
-    
-    // let url = URL(string: "http://www.google.com")!
-    
-    // https://goo.gl/5MQq8p
-    // UIApplication.shared.open(surveyUrl)
-    
-    // dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
-    //   UIApplication.sharedApplication().openURL(NSURL(string: "myURL")!)
-    // })
-    
-    // let myUrl = NSURL (string: useUrl);
-    // let requestObj = NSURLRequest(url: surveyUrl as URL);
-    
-//    if #available(iOS 10.0, *) {
-//      UIApplication.shared.open(surveyUrl as URL, options: [:], completionHandler: nil)
-//    } else {
-//      UIApplication.shared.openURL(surveyUrl as URL)
-//    }
-//  }
+  
+  // https://goo.gl/5MQq8p
   func open(scheme: String) {
     if let url = URL(string: scheme) {
       if #available(iOS 10, *) {
@@ -161,12 +112,12 @@ class ViewController: UIViewController {
   
   private lazy var locationManager: CLLocationManager = {
     let manager = CLLocationManager()
-    manager.desiredAccuracy = kCLLocationAccuracyBest
     manager.delegate = self
+    manager.desiredAccuracy = kCLLocationAccuracyBest
     manager.distanceFilter = self.distanceFilter
     manager.allowsBackgroundLocationUpdates = true
-    manager.requestAlwaysAuthorization()
     manager.pausesLocationUpdatesAutomatically = false // keep running
+    manager.requestAlwaysAuthorization()
     return manager
   }()
   
@@ -234,7 +185,7 @@ class ViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         
       default:
-        print("Oops! Shouldn't have come this far.")
+        print("[WARNING] Unknown auth status")
       }
       
       return
