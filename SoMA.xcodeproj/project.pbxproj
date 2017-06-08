@@ -10,6 +10,7 @@
 		126FE8F04FBF9792997DB326 /* Pods_SoMATests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD65146D837B3092D7C23BE2 /* Pods_SoMATests.framework */; };
 		2CE6DA9D150BBA1C86F4B543 /* Pods_SoMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D64BD203FA8B96B6F23202A /* Pods_SoMA.framework */; };
 		CC70F9EC1EC4A59B0035031B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */; };
+		CCA2763B1EE85325003183A5 /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA2763A1EE85325003183A5 /* NotificationsController.swift */; };
 		CCD56D2D1EC4A0E1004E0EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */; };
 		CCD56D2F1EC4A0E1004E0EF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD56D2E1EC4A0E1004E0EF0 /* ViewController.swift */; };
 		CCD56D321EC4A0E1004E0EF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCD56D301EC4A0E1004E0EF0 /* Main.storyboard */; };
@@ -43,6 +44,7 @@
 		904BFC55264392FE2968D6BD /* Pods-SoMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-SoMA/Pods-SoMA.release.xcconfig"; sourceTree = "<group>"; };
 		CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CC9291661EE664CC00E26556 /* SoMA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoMA.entitlements; sourceTree = "<group>"; };
+		CCA2763A1EE85325003183A5 /* NotificationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		CCD56D291EC4A0E1004E0EF0 /* SoMA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoMA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CCD56D2E1EC4A0E1004E0EF0 /* ViewController.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ViewController.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -135,6 +137,7 @@
 				CC9291661EE664CC00E26556 /* SoMA.entitlements */,
 				CC70F9EA1EC4A59B0035031B /* GoogleService-Info.plist */,
 				CCD56D2C1EC4A0E1004E0EF0 /* AppDelegate.swift */,
+				CCA2763A1EE85325003183A5 /* NotificationsController.swift */,
 				CCD56D2E1EC4A0E1004E0EF0 /* ViewController.swift */,
 				CCD56D301EC4A0E1004E0EF0 /* Main.storyboard */,
 				CCD56D331EC4A0E1004E0EF0 /* Assets.xcassets */,
@@ -237,6 +240,7 @@
 					CCD56D281EC4A0E1004E0EF0 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = H29AK6SA35;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
@@ -250,12 +254,14 @@
 					CCD56D3C1EC4A0E1004E0EF0 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = LZQZTG6RF3;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						TestTargetID = CCD56D281EC4A0E1004E0EF0;
 					};
 					CCD56D471EC4A0E1004E0EF0 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = LZQZTG6RF3;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						TestTargetID = CCD56D281EC4A0E1004E0EF0;
 					};
@@ -407,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCA2763B1EE85325003183A5 /* NotificationsController.swift in Sources */,
 				CCD56D2F1EC4A0E1004E0EF0 /* ViewController.swift in Sources */,
 				CCD56D2D1EC4A0E1004E0EF0 /* AppDelegate.swift in Sources */,
 			);

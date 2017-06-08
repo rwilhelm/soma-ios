@@ -1,22 +1,7 @@
-//
-//  Copyright (c) 2016 Google Inc.
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//
-
 import UIKit
 import UserNotifications
 import Firebase
+import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -68,37 +53,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // [START receive_message]
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        print("AppDelegate didReceiveRemoteNotification")
+        print("[AD] AppDelegate didReceiveRemoteNotification")
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         // TODO: Handle data of notification
         
+        //        Messaging.messaging().appDidReceiveMessage(userInfo)
+        
         // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
+        //        if let messageID = userInfo[gcmMessageIDKey] {
+        //            print("Message ID: \(messageID)")
+        //        }
         
         // Print full message.
         print(userInfo)
     }
     
+    
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("[AD] didReceiveRemoteNotification")
+        
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
+        
+        //        Messaging.messaging().appDidReceiveMessage(userInfo)
+        
         // TODO: Handle data of notification
         
-        // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
         
-        // Print full message.
         print(userInfo)
+        
+        //        if let info = userInfo as? Dictionary<String,String> {
+        //            if let surveyURL = info["surveyURL"] {
+        //                print(surveyURL)
+        //            }
+        //        }
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
     // [END receive_message]
+    
     
     // [START refresh_token]
     func tokenRefreshNotification(_ notification: Notification) {
@@ -122,13 +120,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("[AD] didFailToRegisterForRemoteNotificationsWithError")
         print("Unable to register for remote notifications: \(error.localizedDescription)")
     }
     
-    // This function is added here only for debugging purposes, and can be removed if swizzling is enabled.
-    // If swizzling is disabled then this function must be implemented so that the APNs token can be paired to
-    // the InstanceID token.
+    
+    // [START handle_received_apns_token]
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("[AD] didRegisterForRemoteNotificationsWithDeviceToken")
         print("APNs token retrieved: \(deviceToken)")
         Messaging.messaging().apnsToken = deviceToken
         postTokenToAPI()
@@ -141,6 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().shouldEstablishDirectChannel = true
     }
     // [END connect_on_active]
+    
     
     // [START disconnect_from_fcm]
     func applicationDidEnterBackground(_ application: UIApplication) {

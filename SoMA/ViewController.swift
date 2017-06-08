@@ -12,19 +12,27 @@ import MapKit
 import Foundation
 import Alamofire
 import Firebase
+import FirebaseInstanceID
+import FirebaseMessaging
 
 class ViewController: UIViewController {
   
-  let uploadSchedule: Int = 60 // upload every n minutes
+  let uploadSchedule: Int = 1 // upload every n minutes
+  
   let timeout: TimeInterval = 90 // deferred location update timeout
   let untilTraveled: CLLocationDistance = 0 // update when traveled n meters
+  let distanceFilter: CLLocationDistance = 0
+
   let koblenz = CLLocation(latitude: 50.3569, longitude: 7.5890)
   let regionRadius: CLLocationDistance = 1500
-  let distanceFilter: CLLocationDistance = 0
+
   fileprivate var locations = [CLLocation]()
   fileprivate var annotations = [MKPointAnnotation]()
   fileprivate var lastUpload = Date()
+  
   let API_URL = "https://soma.uni-koblenz.de:5000/upload"
+  let TOKEN_URL = "https://soma.uni-koblenz.de:7593"
+
   let device_id: String = UIDevice.current.identifierForVendor!.uuidString;
 
   struct Location {
@@ -52,7 +60,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     initLocation(homeLocation: koblenz)
-//    start()
+    start()
   }
   
   private lazy var locationManager: CLLocationManager = {
@@ -190,6 +198,7 @@ class ViewController: UIViewController {
     print("OK")
   }
   
+  
   func writeLocationstoFile() {
     
     // TODO: Write out all data to file/sqlite b/c background
@@ -219,6 +228,7 @@ class ViewController: UIViewController {
     }
   }
 }
+
 
 // MARK: - CLLocationManagerDelegate methods
 extension ViewController: CLLocationManagerDelegate {
