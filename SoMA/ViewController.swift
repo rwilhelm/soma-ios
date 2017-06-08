@@ -57,10 +57,106 @@ class ViewController: UIViewController {
     }
   }
   
+  let surveyNotification = Notification.Name(rawValue:"SurveyNotification")
+
   override func viewDidLoad() {
     super.viewDidLoad()
     initLocation(homeLocation: koblenz)
+
+    // [START add_notification_observer]
+    let nc = NotificationCenter.default
+    nc.addObserver(forName:surveyNotification, object:nil, queue:nil, using:handleSurveyNotification)
+    // [END add_notification_observer]
+
     start()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+  }
+  
+  
+  func handleSurveyNotification(notification:Notification) -> Void {
+    print("[FOREGROUND NOTIFICATION]")
+    
+    guard let userInfo = notification.userInfo,
+      let surveyUrl  = userInfo["surveyUrl"] else {
+        print("[FIXME] Notification has no surveyUrl")
+        return
+    }
+    
+    open(scheme: surveyUrl as! String)
+    
+    // [START post_notification]
+        let nc = NotificationCenter.default
+        nc.post(name:surveyNotification, object: nil, userInfo: notification.userInfo)
+    // [END post_notification]
+
+    
+    // FIXME Alert doesnt show up
+//    let alert = UIAlertController(title: "SoMA",
+//                                  message:"Bitte nehmen Sie an der Umfrage teil VG",
+//                                  preferredStyle: UIAlertControllerStyle.alert)
+//    
+//    alert.addAction(UIAlertAction(title: "OK",
+//                                  style: UIAlertActionStyle.default,
+//                                  handler: { action in
+//                                    self.goToSurvey(surveyUrl: surveyUrl)
+//    }))
+//    
+//    self.present(alert, animated: true, completion: nil)
+  }
+  
+  
+//  func goToSurvey(surveyUrl: URL) {
+//    print("[GO TO URL]")
+////    if UIApplication.shared.canOpenURL(surveyUrl) {
+////      UIApplication.shared.open(surveyUrl, options: [:], completionHandler: { (success) in
+////        print("Open url : \(success)")
+////      })
+////      let url = NSURL(string: "https://google.com")!
+////      UIApplication.shared.openURL(url as URL)
+//    
+//      
+//      // Typical usage
+//      open(scheme: surveyUrl)
+//      
+//
+//
+////    }
+
+    
+    // let url = URL(string: "http://www.google.com")!
+    
+    // https://goo.gl/5MQq8p
+    // UIApplication.shared.open(surveyUrl)
+    
+    // dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
+    //   UIApplication.sharedApplication().openURL(NSURL(string: "myURL")!)
+    // })
+    
+    // let myUrl = NSURL (string: useUrl);
+    // let requestObj = NSURLRequest(url: surveyUrl as URL);
+    
+//    if #available(iOS 10.0, *) {
+//      UIApplication.shared.open(surveyUrl as URL, options: [:], completionHandler: nil)
+//    } else {
+//      UIApplication.shared.openURL(surveyUrl as URL)
+//    }
+//  }
+  func open(scheme: String) {
+    if let url = URL(string: scheme) {
+      if #available(iOS 10, *) {
+        UIApplication.shared.open(url, options: [:],
+                                  completionHandler: {
+                                    (success) in
+                                    print("Open \(scheme): \(success)")
+        })
+      } else {
+        let success = UIApplication.shared.openURL(url)
+        print("Open \(scheme): \(success)")
+      }
+    }
   }
   
   private lazy var locationManager: CLLocationManager = {
@@ -302,4 +398,5 @@ extension ViewController: CLLocationManagerDelegate {
       mapView.showAnnotations(self.annotations, animated: true)
     }
   }
+  
 }
